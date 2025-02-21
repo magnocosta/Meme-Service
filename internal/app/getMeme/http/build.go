@@ -13,6 +13,7 @@ func buildRequest(r *http.Request) request {
       Lat: types.Latitude{ Value: r.URL.Query().Get("lat")},
       Lon: types.Longitude{ Value: r.URL.Query().Get("lon")},
     },
+    CustomerID: "magno",
     Query: r.URL.Query().Get("query"),
   }
 }

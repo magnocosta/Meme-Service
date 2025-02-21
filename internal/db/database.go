@@ -7,6 +7,7 @@ import (
 )
 
 var customerDatabase = map[string]types.Customer{}
+var customerTokenDatabase = map[string]int{}
 
 func AddCustomer(input CustomerInput) (CustomerOuput, error) {
   uuid, err := generateUUID()
@@ -23,8 +24,19 @@ func AddCustomer(input CustomerInput) (CustomerOuput, error) {
   return customer, nil
 }
 
-func AddToken() {
+func AddCustomerToken(input CustomerTokenInput) error {
+  customerTokenDatabase[input.GetCustomerID()] = input.GetTokens()
+  return nil
+}
 
+func ConsumerCustomerToken(input ConsumerTokenInput) error {
+  tokens := customerTokenDatabase[input.GetCustomerID()]
+  tokens = tokens -1
+  if (tokens < 0) {
+    return fmt.Errorf("There is not token available")
+  }
+  customerTokenDatabase[input.GetCustomerID()] = tokens;
+  return nil
 }
 
 func GetCustomer() {

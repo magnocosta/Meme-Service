@@ -5,6 +5,7 @@ import "meme_service/internal/shared/types"
 type Input interface {
   GetCoordinate() types.Coordinate
   GetQuery() string
+  GetCustomerID() string
 }
 
 type Item interface {
