@@ -1,8 +1,9 @@
 package business
 
+import "meme_service/internal/shared/types"
+
 type Input interface {
-  GetLon() string
-  GetLat() string
+  GetCoordinate() types.Coordinate
   GetQuery() string
 }
 

@@ -1,13 +1,13 @@
 package http
 
+import "meme_service/internal/shared/types"
+
 type request struct {
-  Lat   string
-  Lon  string
+  Coordinate types.Coordinate
   Query string
 }
 
-func (d request) GetLat()   string { return d.Lat   }
-func (d request) GetLon()   string { return d.Lon   }
+func (d request) GetCoordinate() types.Coordinate { return d.Coordinate   }
 func (d request) GetQuery() string { return d.Query }
 
 type item struct {
@@ -19,5 +19,5 @@ type response struct {
 }
 
 type responseError struct {
-  message string
+  Message string `json:"message"`
 }

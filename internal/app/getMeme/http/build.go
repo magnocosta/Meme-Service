@@ -3,13 +3,16 @@ package http
 import (
 	"encoding/json"
 	"meme_service/internal/app/getMeme/business"
+	"meme_service/internal/shared/types"
 	"net/http"
 )
 
 func buildRequest(r *http.Request) request {
   return request{
-    Lat: r.URL.Query().Get("lat"),
-    Lon: r.URL.Query().Get("lon"),
+    Coordinate: types.Coordinate{
+      Lat: types.Latitude{ Value: r.URL.Query().Get("lat")},
+      Lon: types.Longitude{ Value: r.URL.Query().Get("lon")},
+    },
     Query: r.URL.Query().Get("query"),
   }
 }
@@ -25,7 +28,7 @@ func buildResponse(w http.ResponseWriter, result business.Output) {
 
 func buildError(w http.ResponseWriter, err error) {
   responseError := responseError{
-    message: err.Error(),
+    Message: err.Error(),
   }
   json.NewEncoder(w).Encode(responseError)
 }
