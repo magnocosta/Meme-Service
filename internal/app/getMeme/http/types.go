@@ -17,7 +17,3 @@ type item struct {
 type response struct {
   Items []item `json:"items"`
 }
-
-type responseError struct {
-  Message string `json:"message"`
-}

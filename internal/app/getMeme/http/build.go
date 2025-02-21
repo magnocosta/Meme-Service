@@ -25,10 +25,3 @@ func buildResponse(w http.ResponseWriter, result business.Output) {
 
   json.NewEncoder(w).Encode(response)
 }
-
-func buildError(w http.ResponseWriter, err error) {
-  responseError := responseError{
-    Message: err.Error(),
-  }
-  json.NewEncoder(w).Encode(responseError)
-}

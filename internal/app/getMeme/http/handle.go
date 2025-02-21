@@ -2,6 +2,7 @@ package http
 
 import (
 	"meme_service/internal/app/getMeme/business"
+	"meme_service/internal/shared/errors"
 	"net/http"
 )
 
@@ -10,7 +11,7 @@ func ListMemesHandle(w http.ResponseWriter, r *http.Request) {
 
   result, err := business.Execute(req)
   if err != nil {
-    buildError(w, err)
+    errors.BuildError(w, err)
     return
   }
 
