@@ -8,8 +8,12 @@ import (
 	sharedtypes "meme_service/internal/shared/types"
 )
 
-//go:embed query.sql
-var query string
+//go:embed customer.sql
+var insertCustomerQuery string
+
+//go:embed customer_tokens.sql
+var insertCustomerTokenQuery string
+
 
 type postgresDB struct {
   conn *sql.DB
@@ -18,7 +22,12 @@ type postgresDB struct {
 func (c postgresDB) Create(customer types.Input) (types.Output, error) {
   var result sharedtypes.Customer
 
-  err := c.conn.QueryRow(query, customer.GetName(), customer.GetEmail()).Scan(
+  tx, err := c.conn.Begin()
+	if err != nil {
+		return nil, fmt.Errorf("failed to start transaction: %v", err)
+	}
+
+  err = tx.QueryRow(insertCustomerQuery, customer.GetName(), customer.GetEmail()).Scan(
     &result.ID,
     &result.ExternalID,
 		&result.Name,
@@ -27,8 +36,20 @@ func (c postgresDB) Create(customer types.Input) (types.Output, error) {
   )
 
   if err != nil {
+    tx.Rollback()
     return nil, fmt.Errorf("error on create customer: %v", err)
   }
+
+  _, err = tx.Exec(insertCustomerTokenQuery, result.ID)
+  if err != nil {
+    tx.Rollback()
+    return nil, fmt.Errorf("error on create customer_tokens: %v", err)
+  }
+
+  err = tx.Commit()
+	if err != nil {
+		return nil, fmt.Errorf("failed to commit transaction: %v", err)
+	}
 
   return result, nil
 }

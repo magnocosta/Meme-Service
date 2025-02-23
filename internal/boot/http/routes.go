@@ -3,6 +3,7 @@ package http
 import (
 	createCustomer "meme_service/internal/app/customer/create"
 	listCustomer "meme_service/internal/app/customer/list"
+	createToken "meme_service/internal/app/token/create"
 	"meme_service/internal/db"
 	"net/http"
 	"database/sql"
@@ -21,10 +22,10 @@ func Init() {
   listCustomerHandler := listCustomer.NewHTTPHandler(conn)
   router.HandleFunc("/v1/customers", listCustomerHandler.Handle).Methods("Get")
 
-  // router.HandleFunc("/v1/memes", getMemes.ListMemesHandle).Methods("Get")
-  // router.HandleFunc("/v1/customers", listCustomers.ListCustomersHandle).Methods("Get")
-  // router.HandleFunc("/v1/tokens", addCustomerToken.AddCustomerToken).Methods("Post")
+  createTokenHandler := createToken.NewHTTPHandler(conn)
+  router.HandleFunc("/v1/tokens", createTokenHandler.Handle).Methods("Post")
 
+  // router.HandleFunc("/v1/memes", getMemes.ListMemesHandle).Methods("Get")
   http.ListenAndServe(":8080", router)
 }
 
