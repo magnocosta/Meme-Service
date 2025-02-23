@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: meme
-      POSTGRES_PASSWORD: meme!12
+      POSTGRES_PASSWORD: meme12
       POSTGRES_DB: meme_db
     ports:
       - "5432:5432"
