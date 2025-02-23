@@ -1,7 +1,7 @@
 package business
 
 import (
-	"meme_service/internal/app/addCustomer/types"
+	"meme_service/internal/app/customer/create/types"
 )
 
 type UseCase struct {
@@ -9,8 +9,6 @@ type UseCase struct {
 }
 
 func (c UseCase) Execute(input types.Input) (types.Output, error) {
-
-
   output, err := c.db.Create(input)
   return output, err
 }

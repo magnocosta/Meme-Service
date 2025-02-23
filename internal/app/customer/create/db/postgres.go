@@ -4,7 +4,7 @@ import (
   _ "embed"
 	"database/sql"
 	"fmt"
-	"meme_service/internal/app/addCustomer/types"
+	"meme_service/internal/app/customer/create/types"
 	sharedtypes "meme_service/internal/shared/types"
 )
 

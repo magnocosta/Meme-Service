@@ -2,7 +2,7 @@ package http
 
 import (
 	"encoding/json"
-	"meme_service/internal/app/addCustomer/types"
+	"meme_service/internal/app/customer/create/types"
 	"meme_service/internal/shared/errors"
 	sharedtypes "meme_service/internal/shared/types"
 	"net/http"

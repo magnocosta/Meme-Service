@@ -1,10 +1,10 @@
 package addcustomer
 
 import (
-	"meme_service/internal/app/addCustomer/business"
-	"meme_service/internal/app/addCustomer/db"
-	"meme_service/internal/app/addCustomer/types"
-	"meme_service/internal/app/addCustomer/http"
+	"meme_service/internal/app/customer/create/business"
+	"meme_service/internal/app/customer/create/db"
+	"meme_service/internal/app/customer/create/types"
+	"meme_service/internal/app/customer/create/http"
 	"database/sql"
 )
 
