@@ -3,7 +3,7 @@ package types
 import "time"
 
 type Token struct {
-  CustomerID string    `json:"customer_id"` 
+  CustomerID string    `json:"customer_id,omitempty"` 
   Tokens     int       `json:"tokens"`
   UpdatedAt  time.Time `json:"updated_at"`
 }

@@ -4,7 +4,6 @@ CUSTOMER_ID=$1
 TOKENS=$2
 PAYLOAD=$(cat <<EOF
 {
-  "customer_id": "${CUSTOMER_ID}",
   "tokens": ${TOKENS}
 }
 EOF)
@@ -22,7 +21,7 @@ check_required_vars() {
 
 check_required_vars
 
-curl -s "http://localhost:8080/v1/tokens" \
+curl -s "http://localhost:8080/v1/customers/${CUSTOMER_ID}/tokens" \
   -H "Content-Type: application/json" \
   -d "${PAYLOAD}" \
   | jq
