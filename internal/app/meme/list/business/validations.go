@@ -1,8 +1,11 @@
 package business
 
-import "fmt"
+import (
+	"fmt"
+	"meme_service/internal/app/meme/list/types"
+)
 
-func validate(input Input) (bool, error) {
+func validate(input types.Input) (bool, error) {
   var valid bool
   var err error
 

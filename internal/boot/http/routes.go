@@ -6,6 +6,7 @@ import (
 	listCustomer "meme_service/internal/app/customer/list"
 	createToken "meme_service/internal/app/token/create"
 	showToken "meme_service/internal/app/token/show"
+	listMeme "meme_service/internal/app/meme/list"
 	"meme_service/internal/db"
 	"net/http"
 
@@ -28,6 +29,9 @@ func Init() {
 
   showTokenHandler := showToken.NewHTTPHandler(conn)
   router.HandleFunc("/v1/customers/{customer_id}/tokens", showTokenHandler.Handle).Methods("Get")
+
+  listMemeHandler := listMeme.NewHTTPHandler(conn)
+  router.HandleFunc("/v1/memes", listMemeHandler.Handle).Methods("Get")
 
   // router.HandleFunc("/v1/memes", getMemes.ListMemesHandle).Methods("Get")
   http.ListenAndServe(":8080", router)
