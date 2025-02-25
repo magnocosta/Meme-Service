@@ -16,24 +16,24 @@ import (
 
 func Init() {
   router := mux.NewRouter()
-  conn := createDB()
+  postgresDB := createDB()
+  influxDB := createInfluxDB()
 
-  createCustomerHandler := createCustomer.NewHTTPHandler(conn)
+  createCustomerHandler := createCustomer.NewHTTPHandler(postgresDB)
   router.HandleFunc("/v1/customers", createCustomerHandler.Handle).Methods("Post")
 
-  listCustomerHandler := listCustomer.NewHTTPHandler(conn)
+  listCustomerHandler := listCustomer.NewHTTPHandler(postgresDB)
   router.HandleFunc("/v1/customers", listCustomerHandler.Handle).Methods("Get")
 
-  createTokenHandler := createToken.NewHTTPHandler(conn)
+  createTokenHandler := createToken.NewHTTPHandler(postgresDB, influxDB)
   router.HandleFunc("/v1/customers/{customer_id}/tokens", createTokenHandler.Handle).Methods("Post")
 
-  showTokenHandler := showToken.NewHTTPHandler(conn)
+  showTokenHandler := showToken.NewHTTPHandler(postgresDB)
   router.HandleFunc("/v1/customers/{customer_id}/tokens", showTokenHandler.Handle).Methods("Get")
 
-  listMemeHandler := listMeme.NewHTTPHandler(conn)
+  listMemeHandler := listMeme.NewHTTPHandler(postgresDB, influxDB)
   router.HandleFunc("/v1/memes", listMemeHandler.Handle).Methods("Get")
 
-  // router.HandleFunc("/v1/memes", getMemes.ListMemesHandle).Methods("Get")
   http.ListenAndServe(":8080", router)
 }
 
@@ -50,5 +50,14 @@ func createDB() *sql.DB {
   if err != nil {
     panic(err)
   }
+  return conn
+}
+
+func createInfluxDB() db.InfluxDBConnection {
+  conn, err := db.NewInfluxDB("http://localhost:8086", "secret_token_meme_db", "prix", "meme_db")
+  if err != nil {
+    panic(err)
+  }
+
   return conn
 }

@@ -7,17 +7,18 @@ import (
 	"meme_service/internal/app/meme/list/http"
 	"meme_service/internal/app/meme/list/service"
 	"meme_service/internal/app/meme/list/types"
+	shareddb "meme_service/internal/db"
 )
 
-func NewUseCase(conn *sql.DB) types.UseCase {
+func NewUseCase(postgresConn *sql.DB, influxDbConn shareddb.InfluxDBConnection) types.UseCase {
   service := service.New()
-  db := db.New(conn)
+  db := db.New(postgresConn, influxDbConn)
   useCase := business.New(db, service)
   return useCase
 }
 
-func NewHTTPHandler(conn *sql.DB) types.HTTP {
-  useCase := NewUseCase(conn)
+func NewHTTPHandler(postgresConn *sql.DB, influxDbConn shareddb.InfluxDBConnection) types.HTTP {
+  useCase := NewUseCase(postgresConn, influxDbConn)
   http := http.New(useCase)
   return http
 }

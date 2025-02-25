@@ -18,8 +18,6 @@ type postgres struct {
 func (c postgres) ConsumerToken(input types.Input) (int, error) {
   var result int
 
-  fmt.Println(query)
-
   err := c.conn.QueryRow(query, input.GetCustomerID()).Scan(
     &result,
   )
@@ -31,7 +29,7 @@ func (c postgres) ConsumerToken(input types.Input) (int, error) {
   return result, nil
 }
 
-func New(conn *sql.DB) types.DB {
+func NewPostgres(conn *sql.DB) types.DB {
   return postgres{
     conn: conn,
   }

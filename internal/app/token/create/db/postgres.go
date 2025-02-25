@@ -31,7 +31,7 @@ func (c postgres) Create(input types.Input) (types.Output, error) {
   return result, nil
 }
 
-func New(conn *sql.DB) types.DB {
+func NewPostgres(conn *sql.DB) types.DB {
   return postgres{
     conn: conn,
   }

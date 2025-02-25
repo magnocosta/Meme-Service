@@ -5,17 +5,18 @@ import (
 	"meme_service/internal/app/token/create/db"
 	"meme_service/internal/app/token/create/types"
 	"meme_service/internal/app/token/create/http"
+	shareddb "meme_service/internal/db"
 	"database/sql"
 )
 
-func NewUseCase(conn *sql.DB) types.UseCase {
-  db := db.New(conn)
+func NewUseCase(postgresConn *sql.DB, influxDbConn shareddb.InfluxDBConnection) types.UseCase {
+  db := db.New(postgresConn, influxDbConn)
   useCase := business.New(db)
   return useCase
 }
 
-func NewHTTPHandler(conn *sql.DB) types.HTTP {
-  useCase := NewUseCase(conn)
+func NewHTTPHandler(postgresConn *sql.DB, influxDbConn shareddb.InfluxDBConnection) types.HTTP {
+  useCase := NewUseCase(postgresConn, influxDbConn)
   http := http.New(useCase)
   return http
 }

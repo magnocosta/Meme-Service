@@ -1,6 +1,20 @@
 version: '3.7'
 
 services:
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    restart: always
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=meme
+      - DOCKER_INFLUXDB_INIT_PASSWORD=meme1234
+      - DOCKER_INFLUXDB_INIT_ORG=prix
+      - DOCKER_INFLUXDB_INIT_BUCKET=meme_db
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=secret_token_meme_db
+
   db:
     image: postgres:14.1-alpine
     restart: always

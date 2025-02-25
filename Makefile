@@ -25,6 +25,12 @@ docker.db.stop:
 docker.db.sql:
 	docker-compose -f build/container/docker-compose.yml run db psql -h db -U meme -d meme_db
 
+docker.influxdb.start:
+	docker-compose -f build/container/docker-compose.yml up -d influxdb
+
+docker.influxdb.stop:
+	docker-compose -f build/container/docker-compose.yml rm -fs influxdb
+
 tools.goose.up:
 	@$(GOOSE) up
 
