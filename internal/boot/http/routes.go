@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	createCustomer "meme_service/internal/app/customer/create"
 	listCustomer "meme_service/internal/app/customer/list"
+	listMeme "meme_service/internal/app/meme/list"
 	createToken "meme_service/internal/app/token/create"
 	showToken "meme_service/internal/app/token/show"
-	listMeme "meme_service/internal/app/meme/list"
+	internalaws "meme_service/internal/boot/aws"
 	"meme_service/internal/db"
 	"net/http"
-
+	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 )
@@ -18,6 +19,7 @@ func Init() {
   router := mux.NewRouter()
   postgresDB := createDB()
   influxDB := createInfluxDB()
+  snsClient := createSNSClient()
 
   createCustomerHandler := createCustomer.NewHTTPHandler(postgresDB)
   router.HandleFunc("/v1/customers", createCustomerHandler.Handle).Methods("Post")
@@ -31,7 +33,7 @@ func Init() {
   showTokenHandler := showToken.NewHTTPHandler(postgresDB)
   router.HandleFunc("/v1/customers/{customer_id}/tokens", showTokenHandler.Handle).Methods("Get")
 
-  listMemeHandler := listMeme.NewHTTPHandler(postgresDB, influxDB)
+  listMemeHandler := listMeme.NewHTTPHandler(postgresDB, influxDB, snsClient)
   router.HandleFunc("/v1/memes", listMemeHandler.Handle).Methods("Get")
 
   http.ListenAndServe(":8080", router)
@@ -60,4 +62,17 @@ func createInfluxDB() db.InfluxDBConnection {
   }
 
   return conn
+}
+
+func createSNSClient() *sns.Client {
+  config := internalaws.Config{
+    URL: "http://localhost:4566",
+    Region: "us-east-1",
+  }
+
+  client, err := internalaws.New(&config)
+  if err != nil {
+    panic(err)
+  }
+  return client
 }

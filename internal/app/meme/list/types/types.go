@@ -17,8 +17,13 @@ type Output interface {
 
 type Outputs []Output
 
+type ConsumerTokenOuput interface {
+  GetCustomerID() string    
+  GetTokens()     int       
+}
+
 type DB interface {
-  ConsumerToken(input Input) (int, error)
+  ConsumerToken(input Input) (ConsumerTokenOuput, error)
 }
 
 type UseCase interface {
@@ -31,6 +36,15 @@ type HTTP interface {
 
 type Service interface {
   List(input Input) (Outputs, error)
+}
+
+type InputPublisher interface {
+  GetCustomerID() string    
+  GetTokens()     int       
+}
+
+type Publisher interface {
+  Publish(input InputPublisher) error
 }
 
 type Request struct {

@@ -31,6 +31,21 @@ docker.influxdb.start:
 docker.influxdb.stop:
 	docker-compose -f build/container/docker-compose.yml rm -fs influxdb
 
+docker.aws.start:
+	docker-compose -f build/container/docker-compose.yml up -d aws
+
+docker.aws.stop:
+	docker-compose -f build/container/docker-compose.yml rm -fs aws
+
+tools.tf.install:
+	brew install terraform-local
+
+tools.tf.plan:
+	tflocal plan
+
+tools.tf.apply:
+	tflocal apply
+
 tools.goose.up:
 	@$(GOOSE) up
 

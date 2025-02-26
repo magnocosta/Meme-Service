@@ -11,15 +11,13 @@ type decorator struct {
   postgres postgres
 }
 
-func (i decorator) ConsumerToken(input types.Input) (int, error) {
+func (i decorator) ConsumerToken(input types.Input) (types.ConsumerTokenOuput, error) {
   result, err := i.postgres.ConsumerToken(input)
   if err != nil {
-    return 0, err
+    return nil, err
   }
 
-  if result <= 0 {
-    _, err = i.influxdb.ConsumerToken(input)
-  }
+  _, err = i.influxdb.ConsumerToken(input)
 
   return result, err
 }

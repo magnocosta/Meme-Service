@@ -1,6 +1,14 @@
 version: '3.7'
 
 services:
+  aws:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sns
+      - DEBUG=1
+
   influxdb:
     image: influxdb:2.7
     container_name: influxdb

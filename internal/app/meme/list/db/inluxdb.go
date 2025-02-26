@@ -14,7 +14,7 @@ type influxdb struct {
   conn db.InfluxDBConnection
 }
 
-func (i influxdb) ConsumerToken(input types.Input) (int, error) {
+func (i influxdb) ConsumerToken(input types.Input) (types.ConsumerTokenOuput, error) {
   writeAPI := i.conn.GetClient().WriteAPIBlocking(i.conn.GetOrd(), i.conn.GetBucket())
 
 	tags := map[string]string{
@@ -28,10 +28,10 @@ func (i influxdb) ConsumerToken(input types.Input) (int, error) {
 	point := influxdb2.NewPoint("customer_token_balance", tags, fields, time.Now())
 	err := writeAPI.WritePoint(context.Background(), point)
 	if err != nil {
-		return 0, fmt.Errorf("error writing to InfluxDB: %v", err)
+		return nil, fmt.Errorf("error writing to InfluxDB: %v", err)
 	}
 
-  return 0, nil
+  return nil, nil
 }
 
 func NewInfluxDB(conn db.InfluxDBConnection) types.DB {

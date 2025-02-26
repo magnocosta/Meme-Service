@@ -4,11 +4,11 @@ import "time"
 
 type Customer struct {
   ID         string    `json:"-"` 
-  ExternalID string    `json:"id"`
+  ExternalID string    `json:"id"` // TODO - Magno Costa: I would like to only expose this field externaly
   Name       string    `json:"name"`
   Email      string    `json:"email"`
   CreatedAt  time.Time `json:"created_at"`
-  Tokens     int       `json:"tokens"`
+  // TODO - Magno Costa: I would like to add an access_token with JWT.
 }
 
 func (c Customer) GetName()  string { return c.Name  }
